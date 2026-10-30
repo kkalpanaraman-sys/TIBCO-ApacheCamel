@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic simplified BW-style XML for this portfolio demonstration. -->
+<Process name="GetDestinationDetails">
+  <Activities>
+    <HttpClient name="SendGetRequest">
+      <Method>GET</Method>
+      <Url>https://api.example.com/destinations/123</Url>
+    </HttpClient>
+  </Activities>
+</Process>
