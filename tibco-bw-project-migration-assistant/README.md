@@ -1,68 +1,93 @@
-# TIBCO BW Project → Spring Boot + Apache Camel Migration Assistant
+# TIBCO BW → Spring Boot + Apache Camel Migration Assistant
 
-A Java-only portfolio prototype that accepts either:
-- an exported TIBCO BW project ZIP archive, or
-- an extracted TIBCO BW project folder.
+A Java-only portfolio prototype that accepts either an exported project ZIP or an extracted project folder. It inventories files, inspects simplified process/connection/mapping XML, generates Java model classes from simple XSD definitions, and generates a runnable Spring Boot + Apache Camel example for the included HTTP GET flow.
 
-It scans project files, inventories process/schema/mapping/resource files, extracts simple HTTP endpoint and activity information from XML, generates Java model classes from XSD, and creates an analysis report.
+## What this version demonstrates
 
-## Important scope and honesty note
+1. ZIP or folder ingestion (with ZIP path traversal protection).
+2. Basic XML inventory and process activity / endpoint clues.
+3. Basic shared connection configuration inspection.
+4. Simple XSD-to-Java model generation.
+5. Illustrative mapping field inventory.
+6. **End-to-end target-code generation:** Spring Boot application, Camel HTTP GET route, Java response mapper and a generated service README.
 
-This is a learning prototype using a **synthetic BW-style project**. TIBCO BW exports differ by version and project configuration. The scanner uses generic XML discovery and deliberately limited heuristics; it is not a complete parser for every BW 5.x / BW 6.x export. It does not claim to reproduce any employer's internal AI tool.
+## Honest scope
 
-The current version demonstrates the baseline engineering stages:
-1. project ingestion (ZIP or folder),
-2. project inventory,
-3. XML process/activity and endpoint inspection,
-4. XSD-to-Java model generation,
-5. a mapping inventory and migration report.
+The included project is **synthetic BW-style XML**, not a confidential or native TIBCO export. The generator creates a working target-side example for the known sample flow:
 
-The sample Mapper file is synthetic. Full BW Mapper expression conversion and AI-assisted code generation are future extensions, not implemented capabilities in this version.
+`HTTP GET → map orderId/status/total → return OrderView JSON`
+
+The mapping rules in `OrderMapper.xml` are illustrative (`copy`, `upper-case`, `decimal-copy`). The generated service expects an upstream JSON response containing `orderId`, `status`, and `total`.
+
+This is not yet a general-purpose BW 5.x / BW 6.x parser. It does not yet resolve arbitrary BW shared resources, native Mapper/XPath/XSLT expressions, complex process references, or convert every BW activity. The generated Camel route is a target template based on the sample flow. Do not describe this prototype as the employer's internal AI tool or as production-ready migration automation.
 
 ## Requirements
+
 - JDK 17+
 - Maven 3.9+
+- Internet access on first Maven build to download dependencies for the generated service
 
-## Build
+## Build the migration assistant
 
 ```bash
 mvn clean package
 ```
 
-## Analyse an exported project ZIP
+## Run against the included sample ZIP
 
 ```bash
 mvn exec:java -Dexec.mainClass="com.example.migration.MigrationAssistant" -Dexec.args="--zip input/sample-bw-project.zip --out target/migration-output"
 ```
 
-## Analyse an extracted project folder
+Or use an extracted folder:
 
 ```bash
 mvn exec:java -Dexec.mainClass="com.example.migration.MigrationAssistant" -Dexec.args="--folder input/sample-bw-project --out target/migration-output"
 ```
 
-Generated files:
+## Generated output
+
 - `target/migration-output/project-analysis.md`
 - `target/migration-output/java-models/*.java`
+- `target/migration-output/generated-service/` — standalone Spring Boot + Apache Camel Maven project
 
-## Synthetic sample project
+## Run the generated service
 
-`input/sample-bw-project/` contains:
-- `process/OrderLookup.process` — simplified process XML
-- `schema/OrderRequest.xsd` — input schema
-- `schema/OrderResponse.xsd` — output schema
-- `mapping/OrderMapper.xml` — illustrative source-to-target field mappings
-- `shared/HttpConnection.xml` — illustrative endpoint/protocol configuration
+Start an upstream test API that responds to `GET /orders/{id}` with JSON such as:
 
-A ZIP of the same sample project is also included at `input/sample-bw-project.zip`.
+```json
+{"orderId":"1001","status":"processing","total":49.95}
+```
 
-## Current limitations / next milestones
+Then, from the generated service directory:
 
-- Add version-specific BW export adapters after inspecting real, non-confidential sample exports.
-- Resolve BW shared resources and process references more accurately.
-- Parse real Mapper/XPath/XSLT expressions and generate equivalent Java transformations.
-- Generate Camel routes for HTTP, SOAP, JMS/EMS and SFTP based on verified activity/configuration metadata.
-- Add generated-code compilation and tests.
-- Add an optional LLM layer with prompt templates, structured outputs, review gates and human approval.
+```bash
+# Optional: point to your upstream API (default http://localhost:9090)
+export ORDERS_API_BASE_URL=http://localhost:9090
+mvn spring-boot:run
+```
 
-Never upload confidential employer project exports or credentials to a public repository.
+Call:
+
+```bash
+curl http://localhost:8080/orders/1001
+```
+
+Expected response shape:
+
+```json
+{"orderReference":"1001","orderStatus":"PROCESSING","totalAmount":49.95}
+```
+
+The generated route uses Apache Camel Platform HTTP for the inbound REST endpoint and Camel HTTP for the outbound GET. Review TLS, authentication, timeouts, retries, error handling, logging and data validation before any production use.
+
+## Next engineering milestones
+
+- Add version-specific BW export adapters using non-confidential sample exports.
+- Parse native Mapper expressions and generate equivalent transformations.
+- Resolve process references and shared connection resources.
+- Add generated-service integration tests with a mock upstream API.
+- Add support for more activity types (SOAP, JMS/EMS, SFTP).
+- Add an optional AI layer for assisted analysis/code suggestions with structured output, developer review and validation gates.
+
+Never upload confidential employer project exports, credentials, certificates or customer data to a public repository.

@@ -40,7 +40,7 @@ public class MigrationAssistant {
         report.add("");
         report.add("## Project inventory");
         for (Path file : allFiles) {
-            report.add("- `" + project.relativize(file).toString().replace('\\\\', '/') + "`");
+            report.add("- `" + project.relativize(file).toString().replace('\\', '/') + "`");
         }
 
         report.add("");
@@ -79,11 +79,12 @@ public class MigrationAssistant {
             }
         }
         report.add("");
+        EndToEndGenerator.generate(out.resolve("generated-service"), report);
         report.add("## Scope and review warnings");
         report.add("- This scanner uses generic XML heuristics against a synthetic sample; validate against the exact BW export version.");
         report.add("- Native BW Mapper expressions, imported schemas, namespaces, shared resources and process references may require deeper resolution.");
         report.add("- Endpoint URLs are configuration clues; credentials and environment-specific values must be supplied securely.");
-        report.add("- No production route is generated in this version. Route and transformation generation are planned next steps.");
+        report.add("- A runnable Spring Boot + Apache Camel example is generated for the synthetic HTTP GET flow. It is a template, not a native BW export converter.");
 
         Files.write(out.resolve("project-analysis.md"), report);
         System.out.println("Analysis written to: " + out.toAbsolutePath());
@@ -199,9 +200,9 @@ public class MigrationAssistant {
                 if (name.isBlank() || !hasComplexType(e)) continue;
                 String className = toClassName(name);
                 StringBuilder source = new StringBuilder();
-                source.append("package com.example.generated.model;\\n\\n");
-                source.append("import java.math.BigDecimal;\\n\\n");
-                source.append("public class ").append(className).append(" {\\n");
+                source.append("package com.example.generated.model;\n\n");
+                source.append("import java.math.BigDecimal;\n\n");
+                source.append("public class ").append(className).append(" {\n");
                 NodeList childElements = e.getElementsByTagNameNS("http://www.w3.org/2001/XMLSchema", "element");
                 List<String> getters = new ArrayList<>();
                 for (int j = 0; j < childElements.getLength(); j++) {
@@ -210,15 +211,15 @@ public class MigrationAssistant {
                     String field = child.getAttribute("name");
                     String type = javaType(child.getAttribute("type"));
                     if (field.isBlank()) continue;
-                    source.append("    private ").append(type).append(" ").append(field).append(";\\n");
+                    source.append("    private ").append(type).append(" ").append(field).append(";\n");
                     String cap = Character.toUpperCase(field.charAt(0)) + field.substring(1);
                     source.append("    public ").append(type).append(" get").append(cap)
-                            .append("() { return ").append(field).append("; }\\n");
+                            .append("() { return ").append(field).append("; }\n");
                     source.append("    public void set").append(cap).append("(").append(type).append(" ")
-                            .append(field).append(") { this.").append(field).append(" = ").append(field).append("; }\\n");
+                            .append(field).append(") { this.").append(field).append(" = ").append(field).append("; }\n");
                     getters.add(field);
                 }
-                source.append("}\\n");
+                source.append("}\n");
                 Files.writeString(output.resolve(className + ".java"), source);
                 report.add("- Generated `" + className + ".java` from `" + xsd.getFileName() + "` with fields: " + String.join(", ", getters));
                 count++;
