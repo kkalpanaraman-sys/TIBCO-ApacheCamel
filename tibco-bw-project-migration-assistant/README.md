@@ -17,7 +17,7 @@ A Java-only portfolio prototype that accepts either an exported project ZIP or a
 ## Important scope:
 
 This is a learning prototype using a **synthetic BW-style project**.
->>>>>>> d12e8813d843bb8c8e9848221777cf480f7ebc7d
+
 
 The included project is **synthetic BW-style XML**, not a confidential or native TIBCO export. The generator creates a working target-side example for the known sample flow:
 
@@ -29,7 +29,7 @@ The mapping rules in `OrderMapper.xml` are illustrative (`copy`, `upper-case`, `
  The generated Camel route is a target template based on the sample flow. Do not describe this prototype as the employer's internal AI tool or as production-ready migration automation, Just a mock AI tool
 =======
 
->>>>>>> d12e8813d843bb8c8e9848221777cf480f7ebc7d
+
 
 ## Requirements
 
@@ -100,4 +100,4 @@ The generated route uses Apache Camel Platform HTTP for the inbound REST endpoin
 - Add support for more activity types (SOAP, JMS/EMS, SFTP).
 - Add an optional AI layer for assisted analysis/code suggestions with structured output, developer review and validation gates.
 
-Never upload confidential employer project exports, credentials, certificates or customer data to a public repository.
+
