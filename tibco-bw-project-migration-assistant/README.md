@@ -6,9 +6,9 @@ A Java-only portfolio prototype that accepts either:
 
 It scans project files, inventories process/schema/mapping/resource files, extracts simple HTTP endpoint and activity information from XML, generates Java model classes from XSD, and creates an analysis report.
 
-## Important scope and honesty note
+## Important scope:
 
-This is a learning prototype using a **synthetic BW-style project**. TIBCO BW exports differ by version and project configuration. The scanner uses generic XML discovery and deliberately limited heuristics; it is not a complete parser for every BW 5.x / BW 6.x export. It does not claim to reproduce any employer's internal AI tool.
+This is a learning prototype using a **synthetic BW-style project**.
 
 The current version demonstrates the baseline engineering stages:
 1. project ingestion (ZIP or folder),
@@ -17,7 +17,7 @@ The current version demonstrates the baseline engineering stages:
 4. XSD-to-Java model generation,
 5. a mapping inventory and migration report.
 
-The sample Mapper file is synthetic. Full BW Mapper expression conversion and AI-assisted code generation are future extensions, not implemented capabilities in this version.
+
 
 ## Requirements
 - JDK 17+
