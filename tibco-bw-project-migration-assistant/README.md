@@ -4,6 +4,7 @@ A Java-only portfolio prototype that accepts either an exported project ZIP or a
 
 ## What this version demonstrates
 
+<<<<<<< HEAD
 1. ZIP or folder ingestion (with ZIP path traversal protection).
 2. Basic XML inventory and process activity / endpoint clues.
 3. Basic shared connection configuration inspection.
@@ -12,14 +13,23 @@ A Java-only portfolio prototype that accepts either an exported project ZIP or a
 6. **End-to-end target-code generation:** Spring Boot application, Camel HTTP GET route, Java response mapper and a generated service README.
 
 ## Honest scope
+=======
+## Important scope:
+
+This is a learning prototype using a **synthetic BW-style project**.
+>>>>>>> d12e8813d843bb8c8e9848221777cf480f7ebc7d
 
 The included project is **synthetic BW-style XML**, not a confidential or native TIBCO export. The generator creates a working target-side example for the known sample flow:
 
+<<<<<<< HEAD
 `HTTP GET → map orderId/status/total → return OrderView JSON`
 
 The mapping rules in `OrderMapper.xml` are illustrative (`copy`, `upper-case`, `decimal-copy`). The generated service expects an upstream JSON response containing `orderId`, `status`, and `total`.
 
 This is not yet a general-purpose BW 5.x / BW 6.x parser. It does not yet resolve arbitrary BW shared resources, native Mapper/XPath/XSLT expressions, complex process references, or convert every BW activity. The generated Camel route is a target template based on the sample flow. Do not describe this prototype as the employer's internal AI tool or as production-ready migration automation.
+=======
+
+>>>>>>> d12e8813d843bb8c8e9848221777cf480f7ebc7d
 
 ## Requirements
 
