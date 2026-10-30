@@ -26,7 +26,7 @@ The included project is **synthetic BW-style XML**, not a confidential or native
 
 The mapping rules in `OrderMapper.xml` are illustrative (`copy`, `upper-case`, `decimal-copy`). The generated service expects an upstream JSON response containing `orderId`, `status`, and `total`.
 
-This is not yet a general-purpose BW 5.x / BW 6.x parser. It does not yet resolve arbitrary BW shared resources, native Mapper/XPath/XSLT expressions, complex process references, or convert every BW activity. The generated Camel route is a target template based on the sample flow. Do not describe this prototype as the employer's internal AI tool or as production-ready migration automation.
+ The generated Camel route is a target template based on the sample flow. Do not describe this prototype as the employer's internal AI tool or as production-ready migration automation, Just a mock AI tool
 =======
 
 >>>>>>> d12e8813d843bb8c8e9848221777cf480f7ebc7d
