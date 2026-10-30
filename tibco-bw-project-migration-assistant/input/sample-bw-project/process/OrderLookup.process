@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic BW-style process file for demonstration only. -->
+<Process name="OrderLookup">
+  <Activities>
+    <HttpClient name="GetOrder">
+      <Method>GET</Method>
+      <ConnectionRef>OrderApiConnection</ConnectionRef>
+      <Url>https://api.example.com/orders/1001</Url>
+    </HttpClient>
+    <Mapper name="MapOrderResponse" sourceSchema="OrderResponse" targetSchema="OrderView"/>
+  </Activities>
+</Process>

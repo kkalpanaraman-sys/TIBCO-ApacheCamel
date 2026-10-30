@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic connection metadata. No credentials are included. -->
+<HttpConnection name="OrderApiConnection">
+  <Protocol>HTTPS</Protocol>
+  <BaseUrl>https://api.example.com</BaseUrl>
+  <Authentication>OAuth2</Authentication>
+  <TlsEnabled>true</TlsEnabled>
+</HttpConnection>

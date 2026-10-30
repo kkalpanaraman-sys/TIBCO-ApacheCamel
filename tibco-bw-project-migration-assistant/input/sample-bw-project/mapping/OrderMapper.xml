@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Illustrative mapping metadata, not a native BW Mapper export. -->
+<Mapping name="OrderResponseToOrderView">
+  <Field source="OrderResponse/orderId" target="OrderView/orderReference" expression="copy"/>
+  <Field source="OrderResponse/status" target="OrderView/orderStatus" expression="upper-case"/>
+  <Field source="OrderResponse/total" target="OrderView/totalAmount" expression="decimal-copy"/>
+</Mapping>
